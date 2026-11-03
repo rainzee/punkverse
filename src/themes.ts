@@ -101,7 +101,46 @@ const WESTWORLD = theme({
   ],
 })
 
-export const THEMES: Theme[] = [NONE, BLADE_RUNNER, WESTWORLD]
+const BREAKING_BAD = theme({
+  id: 'breakingbad',
+  name: '绝命毒师',
+  style: 'desert',
+  kinds: { male: 70, female: 28, skeleton: 2 },
+  boost: {
+    bald: 6,
+    shaved: 3,
+    beanie: 4,
+    hoodie: 4,
+    goat: 3,
+    mustache: 3,
+    'normal-beard': 2,
+    'shadow-beard': 3,
+    aviators: 3,
+    shades: 2,
+    grill: 3,
+    cigarette: 2,
+    suit: 3,
+    tee: 2,
+    chain: 3,
+    earring: 2,
+  },
+  ban: [
+    'viking', 'chef', 'mortarboard', 'party', 'pirate', 'crown', 'tiara', 'halo', 'horns', 'cat-ears',
+    'clown-hair', 'clown-eyes', 'clown-nose', 'laser', 'cyber-visor', 'vr', '3d', 'heart-glasses',
+    'sleep-mask', 'monocle', 'tophat', 'police', 'war-paint', 'star-tattoo', 'gas-mask', 'medical-mask',
+  ],
+  chance: { head: 0.9, beard: 0.55, outfit: 0.75, eyes: 0.5 },
+  colors: [
+    swatch('防护黄', '#f2c230'),
+    swatch('结晶蓝', '#4fc3f7'),
+    swatch('沙漠', '#d9a066'),
+    swatch('房车米', '#e8dcc0'),
+    swatch('元素绿', '#3f6b3a'),
+    swatch('淡紫', '#b39ddb'),
+  ],
+})
+
+export const THEMES: Theme[] = [NONE, BLADE_RUNNER, WESTWORLD, BREAKING_BAD]
 export const THEME_BY_ID: Record<string, Theme> = Object.fromEntries(THEMES.map((t) => [t.id, t]))
 
 export function themeOf(id: string | undefined): Theme {

@@ -320,6 +320,25 @@ export const STYLES: Style[] = [
     },
   },
   {
+    id: 'desert',
+    name: '沙漠滤镜',
+    desc: '新墨西哥的烈日, 泛黄的天空与台地',
+    background: (p) => {
+      const s = p.size
+      p.linear(['#f7e3a1', '#f0c46a', '#d98b45'])
+      p.circle(s * 0.82, s * 0.16, s * 0.07, '#fff3c4')
+      p.rect(0, s * 0.72, s * 0.3, s * 0.28, '#8a5a35')
+      p.rect(s * 0.62, s * 0.66, s * 0.38, s * 0.34, '#7a4e2e')
+      p.rect(s * 0.66, s * 0.62, s * 0.22, s * 0.05, '#7a4e2e')
+      p.rect(0, s * 0.86, s, s * 0.14, '#c98a4f')
+    },
+    color: (c) => (isInk(c) ? parse('#2b1a0a') : adjust(lerp(c, rgba(255, 204, 85, c.a), 0.2), { satAdd: 0.1 })),
+    post: (ctx, size, rng) => {
+      vignette(ctx, size, 0.35)
+      grain(ctx, size, rng, 0.06)
+    },
+  },
+  {
     id: 'wanted',
     name: '通缉令',
     desc: '钉在酒馆门口的泛黄悬赏告示',
