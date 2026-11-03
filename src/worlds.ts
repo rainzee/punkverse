@@ -153,7 +153,42 @@ const BREAKING_BAD = world({
   ],
 })
 
-export const WORLDS: World[] = [CLASSIC, BLADE_RUNNER, WESTWORLD, BREAKING_BAD]
+const CLOCKWORK = world({
+  id: 'clockwork',
+  name: '发条橙',
+  style: 'opart',
+  species: { human: 100 },
+  sex: { male: 72, female: 28 },
+  boost: {
+    tophat: 3,
+    'side-part': 3,
+    vampire: 2,
+    bald: 2,
+    smile: 4,
+    eyeliner: 3,
+    'eye-shadow': 2,
+    lipstick: 2,
+    suit: 2,
+    bowtie: 2,
+    scar: 2,
+  },
+  ban: [
+    'vr', 'cyber-visor', 'laser', 'headphones', 'vape', 'ski-goggles', 'gas-mask', 'medical-mask', 'hoodie',
+    'cap', 'viking', 'chef', 'mortarboard', 'pirate', 'crown', 'tiara', 'halo', 'horns', 'cat-ears', 'cowboy',
+    'party', 'hawaiian', 'dreads', 'bucket', '3d', 'heart-glasses', 'grill', 'lollipop', 'bubblegum',
+  ],
+  chance: { head: 0.9, eyes: 0.55, outfit: 0.85 },
+  colors: [
+    swatch('牛奶白', '#f4f1ea'),
+    swatch('发条橙', '#f28c28'),
+    swatch('霓虹紫', '#9b4dff'),
+    swatch('薄荷', '#7fe0c4'),
+    swatch('品红', '#e0318f'),
+    swatch('黑', '#141414'),
+  ],
+})
+
+export const WORLDS: World[] = [CLASSIC, BLADE_RUNNER, WESTWORLD, BREAKING_BAD, CLOCKWORK]
 export const WORLD_BY_ID: Record<string, World> = Object.fromEntries(WORLDS.map((w) => [w.id, w]))
 
 export function worldOf(id: string | undefined): World {

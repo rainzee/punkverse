@@ -339,6 +339,22 @@ export const STYLES: Style[] = [
     },
   },
   {
+    id: 'opart',
+    name: '欧普艺术',
+    desc: '六十年代的黑白错视圆环与一抹发条橙',
+    background: (p) => {
+      const s = p.size
+      p.fill('#f4f1ea')
+      for (let i = 16; i >= 7; i--) p.circle(s * 0.5, s * 0.55, s * 0.06 * i, i % 2 ? '#111111' : '#f4f1ea')
+      p.circle(s * 0.5, s * 0.55, s * 0.4, '#f28c28')
+    },
+    color: (c) => {
+      if (isInk(c)) return parse('#111111')
+      const gray = Math.max(c.r, c.g, c.b) - Math.min(c.r, c.g, c.b) < 16
+      return gray ? c : adjust(c, { satAdd: 0.12 })
+    },
+  },
+  {
     id: 'wanted',
     name: '通缉令',
     desc: '钉在酒馆门口的泛黄悬赏告示',

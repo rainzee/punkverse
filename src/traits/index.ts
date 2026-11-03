@@ -9,6 +9,7 @@ import { moreBeard, moreMouth } from './more-face'
 import { moreHead } from './more-head'
 import { outfit } from './outfit'
 import { bladeRunner } from './world-bladerunner'
+import { clockwork } from './world-clockwork'
 import { breakingBad } from './world-breakingbad'
 import { westworld } from './world-westworld'
 
@@ -29,5 +30,6 @@ export const TRAITS: Trait[] = [
   ...bladeRunner,
   ...westworld,
   ...breakingBad,
+  ...clockwork,
 ]
 export const TRAIT_BY_ID: Record<string, Trait> = Object.fromEntries(TRAITS.map((x) => [x.id, x]))
