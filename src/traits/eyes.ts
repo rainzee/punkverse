@@ -200,7 +200,7 @@ export const classicEyes: Trait[] = [
     id: 'eye-shadow',
     name: '眼影',
     slot: 'eyes',
-    sex: 'f',
+    sex: 'female',
     weight: 6,
     swatches: SHADOW,
     draw: ({ g, a, c }) => {

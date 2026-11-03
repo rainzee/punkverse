@@ -1,29 +1,40 @@
-import { type Slot, type Swatch, swatch, type Trait } from './traits'
+import { type Sex, type Slot, type Swatch, swatch, type Trait } from './traits'
 
-/** IP 主题, 与种族正交, 调整种族分布, 部件池, 权重, 配色与默认风格 */
-export interface Theme {
+/** 世界, 与物种和性别正交, 决定物种与性别分布, 部件池, 部件权重, 配色与默认风格 */
+export interface World {
   id: string
   name: string
   style: string
-  kinds: Record<string, number>
+  species: Record<string, number>
+  sex: Record<Sex, number>
   boost: Record<string, number>
   ban: Set<string>
   chance: Partial<Record<Slot, number>>
   colors: Swatch[]
 }
 
-/** 主题专属部件的权重倍数, 让主题辨识度足够高 */
+/** 世界专属部件的权重倍数, 让世界辨识度足够高 */
 const SIGNATURE = 3
 
-const theme = (o: Omit<Theme, 'ban'> & { ban?: string[] }): Theme => ({ ...o, ban: new Set(o.ban ?? []) })
+const world = (o: Omit<World, 'ban'> & { ban?: string[] }): World => ({ ...o, ban: new Set(o.ban ?? []) })
 
-const NONE = theme({ id: 'none', name: '经典', style: 'classic', kinds: {}, boost: {}, chance: {}, colors: [] })
+const CLASSIC = world({
+  id: 'classic',
+  name: '经典',
+  style: 'classic',
+  species: { human: 91, zombie: 5, ape: 3, robot: 2, alien: 1.5, skeleton: 1.5, demon: 1 },
+  sex: { male: 60, female: 40 },
+  boost: {},
+  chance: {},
+  colors: [],
+})
 
-const BLADE_RUNNER = theme({
+const BLADE_RUNNER = world({
   id: 'bladerunner',
   name: '银翼杀手',
   style: 'rain',
-  kinds: { male: 48, female: 44, robot: 8 },
+  species: { human: 92, robot: 8 },
+  sex: { male: 52, female: 48 },
   boost: {
     cigarette: 4,
     shades: 2,
@@ -56,11 +67,12 @@ const BLADE_RUNNER = theme({
   ],
 })
 
-const WESTWORLD = theme({
+const WESTWORLD = world({
   id: 'westworld',
   name: '西部世界',
   style: 'wanted',
-  kinds: { male: 55, female: 42, skeleton: 3 },
+  species: { human: 97, skeleton: 3 },
+  sex: { male: 57, female: 43 },
   boost: {
     cowboy: 6,
     fedora: 2,
@@ -101,11 +113,12 @@ const WESTWORLD = theme({
   ],
 })
 
-const BREAKING_BAD = theme({
+const BREAKING_BAD = world({
   id: 'breakingbad',
   name: '绝命毒师',
   style: 'desert',
-  kinds: { male: 70, female: 28, skeleton: 2 },
+  species: { human: 98, skeleton: 2 },
+  sex: { male: 70, female: 30 },
   boost: {
     bald: 6,
     shaved: 3,
@@ -140,18 +153,18 @@ const BREAKING_BAD = theme({
   ],
 })
 
-export const THEMES: Theme[] = [NONE, BLADE_RUNNER, WESTWORLD, BREAKING_BAD]
-export const THEME_BY_ID: Record<string, Theme> = Object.fromEntries(THEMES.map((t) => [t.id, t]))
+export const WORLDS: World[] = [CLASSIC, BLADE_RUNNER, WESTWORLD, BREAKING_BAD]
+export const WORLD_BY_ID: Record<string, World> = Object.fromEntries(WORLDS.map((w) => [w.id, w]))
 
-export function themeOf(id: string | undefined): Theme {
-  return THEME_BY_ID[id ?? 'none'] ?? NONE
+export function worldOf(id: string | undefined): World {
+  return WORLD_BY_ID[id ?? CLASSIC.id] ?? CLASSIC
 }
 
-/** 部件是否属于主题部件池, 专属部件只在对应主题出现 */
-export function inTheme(t: Trait, th: Theme): boolean {
-  return t.theme ? t.theme === th.id : !th.ban.has(t.id)
+/** 部件是否属于该世界的部件池, 专属部件只在对应世界出现 */
+export function inWorld(t: Trait, w: World): boolean {
+  return t.world ? t.world === w.id : !w.ban.has(t.id)
 }
 
-export function themedWeight(t: Trait, th: Theme): number {
-  return t.weight * (t.theme ? SIGNATURE : (th.boost[t.id] ?? 1))
+export function worldWeight(t: Trait, w: World): number {
+  return t.weight * (t.world ? SIGNATURE : (w.boost[t.id] ?? 1))
 }

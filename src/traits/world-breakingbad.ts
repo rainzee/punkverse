@@ -3,7 +3,7 @@ import { withOutline } from '../grid'
 import { BEARD, K, swatch, t, type Trait, W } from './kit'
 import { body, dress, neck } from './outfit'
 
-const THEME = 'breakingbad'
+const WORLD = 'breakingbad'
 const CRYSTAL = '#4fc3f7'
 
 export const breakingBad: Trait[] = [
@@ -11,7 +11,7 @@ export const breakingBad: Trait[] = [
     id: 'porkpie',
     name: '海森堡帽',
     slot: 'head',
-    theme: THEME,
+    world: WORLD,
     weight: 10,
     swatches: [swatch('黑', '#1c1c1c'), swatch('灰', '#4a4a4a')],
     draw: ({ g, a, c }) =>
@@ -26,7 +26,7 @@ export const breakingBad: Trait[] = [
     id: 'teacher-glasses',
     name: '化学老师眼镜',
     slot: 'eyes',
-    theme: THEME,
+    world: WORLD,
     weight: 8,
     swatches: [swatch('黑', '#1a1a1a'), swatch('银', '#9a9a9a'), swatch('棕', '#5a4632')],
     draw: ({ g, a, c }) => {
@@ -45,8 +45,8 @@ export const breakingBad: Trait[] = [
     id: 'heisenberg-goatee',
     name: '海森堡胡',
     slot: 'beard',
-    sex: 'm',
-    theme: THEME,
+    sex: 'male',
+    world: WORLD,
     weight: 10,
     swatches: BEARD,
     draw: ({ g, a, c }) => {
@@ -61,7 +61,7 @@ export const breakingBad: Trait[] = [
     id: 'respirator',
     name: '防毒半面罩',
     slot: 'mouth',
-    theme: THEME,
+    world: WORLD,
     weight: 8,
     swatches: [swatch('紫', '#7b4fa0'), swatch('粉', '#e07aa0'), swatch('黄', '#e8c43a')],
     draw: ({ g, a, c }) => {
@@ -81,7 +81,7 @@ export const breakingBad: Trait[] = [
     id: 'hazmat',
     name: '黄色防护服',
     slot: 'outfit',
-    theme: THEME,
+    world: WORLD,
     weight: 8,
     swatches: [swatch('黄', '#f2c230')],
     draw: ({ g, a, c }) => {
@@ -117,7 +117,7 @@ export const breakingBad: Trait[] = [
     id: 'loud-tie',
     name: '律师花领带',
     slot: 'outfit',
-    theme: THEME,
+    world: WORLD,
     weight: 5,
     swatches: [swatch('红', '#d62828'), swatch('金', '#e8b923'), swatch('青绿', '#1fa39a'), swatch('粉', '#e05aa0')],
     draw: (ctx) => {
@@ -135,7 +135,7 @@ export const breakingBad: Trait[] = [
     id: 'khaki-jacket',
     name: '卡其夹克',
     slot: 'outfit',
-    theme: THEME,
+    world: WORLD,
     weight: 6,
     draw: (ctx) => {
       const { a } = ctx
@@ -151,8 +151,8 @@ export const breakingBad: Trait[] = [
     id: 'manager',
     name: '快餐店经理制服',
     slot: 'outfit',
-    sex: 'm',
-    theme: THEME,
+    sex: 'male',
+    world: WORLD,
     weight: 3,
     draw: (ctx) => {
       const { g, a } = ctx
@@ -168,7 +168,7 @@ export const breakingBad: Trait[] = [
     id: 'crystal-necklace',
     name: '蓝晶项链',
     slot: 'acc',
-    theme: THEME,
+    world: WORLD,
     weight: 5,
     draw: ({ g, a }) => {
       const cx = Math.floor((a.neckL + a.neckR) / 2)
@@ -182,7 +182,7 @@ export const breakingBad: Trait[] = [
     id: 'sunburn',
     name: '沙漠晒伤',
     slot: 'acc',
-    theme: THEME,
+    world: WORLD,
     z: 1,
     weight: 5,
     draw: ({ g, a }) => {

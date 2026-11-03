@@ -3,7 +3,7 @@ import { withOutline } from '../grid'
 import { K, swatch, t, type Trait, W } from './kit'
 import { body, dress, neck } from './outfit'
 
-const THEME = 'bladerunner'
+const WORLD = 'bladerunner'
 const NEON = [swatch('霓虹粉', '#ff2e88'), swatch('青', '#00e5ff'), swatch('琥珀', '#ffb347'), swatch('血橙', '#ff5a1f')]
 
 export const bladeRunner: Trait[] = [
@@ -11,7 +11,7 @@ export const bladeRunner: Trait[] = [
     id: 'neon-umbrella',
     name: '霓虹伞',
     slot: 'head',
-    theme: THEME,
+    world: WORLD,
     weight: 6,
     swatches: NEON,
     draw: ({ g, a, c }) => {
@@ -31,7 +31,7 @@ export const bladeRunner: Trait[] = [
     id: 'platinum-crop',
     name: '铂金短发',
     slot: 'head',
-    theme: THEME,
+    world: WORLD,
     weight: 6,
     swatches: [swatch('铂金', '#f4f1e4'), swatch('银白', '#d9dde3')],
     draw: ({ g, a, c, rng }) => {
@@ -48,8 +48,8 @@ export const bladeRunner: Trait[] = [
     id: 'victory-rolls',
     name: '复古盘发',
     slot: 'head',
-    sex: 'f',
-    theme: THEME,
+    sex: 'female',
+    world: WORLD,
     weight: 6,
     swatches: [swatch('黑', '#1a1412'), swatch('深棕', '#3b2416')],
     draw: ({ g, a, c }) => {
@@ -70,7 +70,7 @@ export const bladeRunner: Trait[] = [
     id: 'replicant',
     name: '复制人瞳光',
     slot: 'eyes',
-    theme: THEME,
+    world: WORLD,
     weight: 12,
     draw: ({ g, a }) => {
       for (const e of [a.eyeL, a.eyeR]) {
@@ -83,7 +83,7 @@ export const bladeRunner: Trait[] = [
     id: 'spray-mask',
     name: '喷漆眼妆',
     slot: 'eyes',
-    theme: THEME,
+    world: WORLD,
     weight: 5,
     draw: ({ g, a }) => {
       g.rect(a.L, a.eyeY - 1, a.R - a.L + 1, 2, alpha('#0a0a0a', 0.88))
@@ -95,7 +95,7 @@ export const bladeRunner: Trait[] = [
     id: 'neon-smoke',
     name: '霓虹烟',
     slot: 'mouth',
-    theme: THEME,
+    world: WORLD,
     weight: 6,
     swatches: NEON,
     draw: ({ g, a, c }) => {
@@ -112,7 +112,7 @@ export const bladeRunner: Trait[] = [
     id: 'trench',
     name: '风衣立领',
     slot: 'outfit',
-    theme: THEME,
+    world: WORLD,
     weight: 10,
     swatches: [swatch('卡其', '#8a7350'), swatch('深棕', '#3e2c1c'), swatch('黑', '#1c1c1c')],
     draw: (ctx) => {
@@ -129,7 +129,7 @@ export const bladeRunner: Trait[] = [
     id: 'raincoat',
     name: '透明雨衣',
     slot: 'outfit',
-    theme: THEME,
+    world: WORLD,
     weight: 6,
     draw: (ctx) => {
       const { a } = ctx
@@ -144,8 +144,8 @@ export const bladeRunner: Trait[] = [
     id: 'shoulder-pads',
     name: '垫肩套装',
     slot: 'outfit',
-    sex: 'f',
-    theme: THEME,
+    sex: 'female',
+    world: WORLD,
     weight: 6,
     swatches: [swatch('黑', '#1c1c1c'), swatch('酒红', '#5a1a24'), swatch('烟灰', '#3b3f4a')],
     draw: (ctx) => {
@@ -163,7 +163,7 @@ export const bladeRunner: Trait[] = [
     id: 'led-collar',
     name: '发光颈环',
     slot: 'acc',
-    theme: THEME,
+    world: WORLD,
     weight: 5,
     swatches: NEON,
     draw: ({ g, a, c }) => {

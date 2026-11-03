@@ -3,7 +3,7 @@ import { type Grid, type Hex, withOutline } from '../grid'
 import type { Rng } from '../rng'
 
 export type Slot = 'head' | 'eyes' | 'beard' | 'mouth' | 'outfit' | 'acc'
-export type Sex = 'm' | 'f'
+export type Sex = 'male' | 'female'
 
 /** 部件配色 */
 export interface Swatch {
@@ -58,7 +58,7 @@ export interface Trait {
   z: number
   weight: number
   sex?: Sex
-  theme?: string
+  world?: string
   swatches: Swatch[]
   draw: (ctx: DrawCtx) => void
 }

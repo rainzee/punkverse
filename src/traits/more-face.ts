@@ -7,7 +7,7 @@ export const moreBeard: Trait[] = [
     id: 'pencil',
     name: '细胡',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 4,
     swatches: BEARD,
     draw: ({ g, a, c }) => {
@@ -20,7 +20,7 @@ export const moreBeard: Trait[] = [
     id: 'sideburns',
     name: '鬓角',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 4,
     swatches: BEARD,
     draw: ({ g, a, c }) => {
@@ -31,7 +31,7 @@ export const moreBeard: Trait[] = [
     id: 'soul-patch',
     name: '唇下胡',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 3,
     swatches: BEARD,
     draw: ({ g, a, c }) => g.vline(a.mouthL + 1, a.mouthY + 1, a.mouthY + 2, c.main),
@@ -40,7 +40,7 @@ export const moreBeard: Trait[] = [
     id: 'van-dyke',
     name: '范戴克胡',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 3,
     swatches: BEARD,
     draw: ({ g, a, c }) => {
@@ -53,7 +53,7 @@ export const moreBeard: Trait[] = [
     id: 'braided',
     name: '编辫胡',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 2,
     swatches: BEARD,
     draw: ({ g, a, c }) => {

@@ -3,9 +3,6 @@ import {
   drawPunk,
   type GenOptions,
   generate,
-  KIND,
-  KINDS,
-  type Kind,
   type Punk,
   SLOT_NAMES,
   SLOTS,
@@ -14,9 +11,10 @@ import {
 } from './punk'
 import { renderCanvas, renderSvg } from './render'
 import { randomSeed } from './rng'
+import { SEX_NAMES, SEXES, SPECIES, SPECIES_BY_ID, type Species } from './species'
 import { STYLE_BY_ID, STYLES } from './styles'
-import { inTheme, THEME_BY_ID, THEMES, themeOf } from './themes'
-import { TRAIT_BY_ID, type Slot } from './traits'
+import { type Sex, type Slot, TRAIT_BY_ID } from './traits'
+import { inWorld, WORLD_BY_ID, WORLDS, worldOf } from './worlds'
 
 interface State {
   seed: string
@@ -37,9 +35,11 @@ function readHash() {
   const q = new URLSearchParams(location.hash.slice(1))
   if (q.get('s')) state.seed = q.get('s')!
   if (STYLE_BY_ID[q.get('st') ?? '']) state.style = q.get('st')!
-  if (THEME_BY_ID[q.get('th') ?? '']) state.opt.theme = q.get('th')!
-  const k = q.get('k') as Kind | null
-  if (k && KIND[k]) state.opt.kind = k
+  if (WORLD_BY_ID[q.get('w') ?? '']) state.opt.world = q.get('w')!
+  const sx = q.get('sx') as Sex | null
+  if (sx && SEX_NAMES[sx]) state.opt.sex = sx
+  const sp = q.get('sp') as Species | null
+  if (sp && SPECIES_BY_ID[sp]) state.opt.species = sp
   if (q.get('sk')) state.opt.skin = Number(q.get('sk'))
   for (const s of SLOTS) if (q.get(s)) state.opt.slots[s] = q.get(s)!
   if (q.get('bg') === '0') state.background = false
@@ -47,8 +47,9 @@ function readHash() {
 
 function writeHash() {
   const q = new URLSearchParams({ s: state.seed, st: state.style })
-  if (state.opt.theme !== 'none') q.set('th', state.opt.theme)
-  if (state.opt.kind !== 'random') q.set('k', state.opt.kind)
+  if (state.opt.world !== 'classic') q.set('w', state.opt.world)
+  if (state.opt.sex !== 'random') q.set('sx', state.opt.sex)
+  if (state.opt.species !== 'random') q.set('sp', state.opt.species)
   if (state.opt.skin !== 'random') q.set('sk', String(state.opt.skin))
   for (const s of SLOTS) if (state.opt.slots[s] !== 'random') q.set(s, state.opt.slots[s])
   if (!state.background) q.set('bg', '0')
@@ -56,7 +57,7 @@ function writeHash() {
 }
 
 const style = () => STYLE_BY_ID[state.style]
-const kindSex = () => (state.opt.kind === 'random' ? undefined : KIND[state.opt.kind].sex)
+const lockedSex = () => (state.opt.sex === 'random' ? undefined : state.opt.sex)
 
 function chip(label: string, on: boolean, onClick: () => void) {
   const b = document.createElement('button')
@@ -75,19 +76,19 @@ function swatchChip(bg: string, on: boolean, onClick: () => void) {
 }
 
 function renderControls() {
-  ($('seed') as HTMLInputElement).value = state.seed
+  ;($('seed') as HTMLInputElement).value = state.seed
 
-  $('themes').replaceChildren(...THEMES.map((th) => chip(th.name, state.opt.theme === th.id, () => setTheme(th.id))))
-
-  const theme = themeOf(state.opt.theme)
-  const kinds = $('kinds')
-  const kindList = KINDS.filter((k) => !Object.keys(theme.kinds).length || theme.kinds[k.id])
-  kinds.replaceChildren(
-    chip('随机', state.opt.kind === 'random', () => setKind('random')),
-    ...kindList.map((k) => chip(k.name, state.opt.kind === k.id, () => setKind(k.id))),
+  $('worlds').replaceChildren(...WORLDS.map((w) => chip(w.name, state.opt.world === w.id, () => setWorld(w.id))))
+  $('sexes').replaceChildren(
+    chip('随机', state.opt.sex === 'random', () => setSex('random')),
+    ...SEXES.map((s) => chip(s.name, state.opt.sex === s.id, () => setSex(s.id))),
+  )
+  $('species').replaceChildren(
+    chip('随机', state.opt.species === 'random', () => setSpecies('random')),
+    ...SPECIES.map((s) => chip(s.name, state.opt.species === s.id, () => setSpecies(s.id))),
   )
 
-  const skins = KIND[state.opt.kind === 'random' ? 'male' : state.opt.kind].skins
+  const skins = SPECIES_BY_ID[state.opt.species === 'random' ? 'human' : state.opt.species].skins
   const mixed = `conic-gradient(${skins.map((s) => s.skin.s).join(',')})`
   $('skins').hidden = skins.length < 2
   $('skins').replaceChildren(
@@ -95,11 +96,10 @@ function renderControls() {
     ...skins.map((s, i) => swatchChip(s.skin.s, state.opt.skin === i, () => update({ skin: i }))),
   )
 
-  const sex = kindSex()
   const slots = $('slots')
   slots.replaceChildren()
   for (const slot of SLOTS) {
-    const pool = traitsFor(slot, sex, state.opt.theme)
+    const pool = traitsFor(slot, lockedSex(), state.opt.world)
     const sel = document.createElement('select')
     const opts: [string, string][] = [
       ['random', SLOT_NAMES[slot]],
@@ -115,29 +115,29 @@ function renderControls() {
   ;($('bg') as HTMLInputElement).checked = state.background
 }
 
-function setTheme(id: string) {
-  const th = themeOf(id)
-  state.opt.theme = th.id
-  state.style = th.style
-  if (state.opt.kind !== 'random' && Object.keys(th.kinds).length && !th.kinds[state.opt.kind]) {
-    state.opt.kind = 'random'
-    state.opt.skin = 'random'
-  }
+function setWorld(id: string) {
+  const w = worldOf(id)
+  state.opt.world = w.id
+  state.style = w.style
   for (const s of SLOTS) {
     const t = TRAIT_BY_ID[state.opt.slots[s]]
-    if (t && !inTheme(t, th)) state.opt.slots[s] = 'random'
+    if (t && !inWorld(t, w)) state.opt.slots[s] = 'random'
   }
   update({})
 }
 
-function setKind(kind: Kind | 'random') {
-  state.opt.kind = kind
-  state.opt.skin = 'random'
-  const sex = kindSex()
+function setSex(sex: Sex | 'random') {
+  state.opt.sex = sex
   for (const s of SLOTS) {
     const t = TRAIT_BY_ID[state.opt.slots[s]]
-    if (t?.sex && sex && t.sex !== sex) state.opt.slots[s] = 'random'
+    if (t?.sex && sex !== 'random' && t.sex !== sex) state.opt.slots[s] = 'random'
   }
+  update({})
+}
+
+function setSpecies(species: Species | 'random') {
+  state.opt.species = species
+  state.opt.skin = 'random'
   update({})
 }
 
@@ -165,19 +165,23 @@ function renderMain() {
 
   const attrs = $('attrs')
   attrs.replaceChildren()
-  const li = (text: string, slot?: Slot, id?: string) => {
+  const li = (text: string, locked: boolean, toggle: () => void) => {
     const el = document.createElement('li')
     el.textContent = text
-    if (slot && id) {
-      const locked = state.opt.slots[slot] === id
-      el.classList.add('lockable')
-      el.classList.toggle('locked', locked)
-      el.onclick = () => setSlot(slot, locked ? 'random' : id)
-    }
+    el.classList.add('lockable')
+    el.classList.toggle('locked', locked)
+    el.onclick = toggle
     attrs.append(el)
   }
-  li(KIND[punk.kind].name)
-  for (const pk of punk.picks) li(traitLabel(pk), pk.trait.slot, pk.trait.id)
+  const sexLocked = state.opt.sex === punk.sex
+  const speciesLocked = state.opt.species === punk.species
+  li(SEX_NAMES[punk.sex], sexLocked, () => setSex(sexLocked ? 'random' : punk.sex))
+  li(SPECIES_BY_ID[punk.species].name, speciesLocked, () => setSpecies(speciesLocked ? 'random' : punk.species))
+  for (const pk of punk.picks) {
+    const { slot, id } = pk.trait
+    const locked = state.opt.slots[slot] === id
+    li(traitLabel(pk), locked, () => setSlot(slot, locked ? 'random' : id))
+  }
 }
 
 function renderStyles() {
@@ -278,11 +282,12 @@ function bind() {
     const data = {
       seed: punk.seed,
       style: state.style,
-      theme: punk.theme,
-      type: punk.kind,
-      skin: KIND[punk.kind].skins[punk.skinIndex].name,
+      world: punk.world,
+      sex: punk.sex,
+      species: punk.species,
+      skin: SPECIES_BY_ID[punk.species].skins[punk.skinIndex].name,
       face: punk.face,
-      attributes: punk.picks.map((p) => ({ slot: p.trait.slot, id: p.trait.id, name: p.trait.name, color: p.swatch.name || undefined })),
+      traits: punk.picks.map((p) => ({ slot: p.trait.slot, id: p.trait.id, name: p.trait.name, color: p.swatch.name || undefined })),
     }
     download(`${fileBase()}.json`, new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }))
   }

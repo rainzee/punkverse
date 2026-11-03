@@ -311,3 +311,20 @@ button.link:hover {
     position: static;
   }
 }
+
+.dim {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 8px;
+  align-items: start;
+}
+
+.dim > span {
+  color: var(--dim);
+  font-size: 12px;
+  line-height: 28px;
+}
+
+#skins {
+  padding-left: 42px;
+}

@@ -19,7 +19,7 @@ export const classicBeard: Trait[] = [
     id: 'mustache',
     name: '八字胡',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 7,
     swatches: BEARD,
     draw: ({ g, a, c }) => g.hline(a.mouthY - 1, a.mouthL - 1, a.mouthR + 1, c.main),
@@ -28,7 +28,7 @@ export const classicBeard: Trait[] = [
     id: 'handlebars',
     name: '翘胡子',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 4,
     swatches: BEARD,
     draw: ({ g, a, c }) => {
@@ -41,7 +41,7 @@ export const classicBeard: Trait[] = [
     id: 'goat',
     name: '山羊胡',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 5,
     swatches: BEARD,
     draw: ({ g, a, c }) => g.rect(a.mouthL, a.mouthY + 2, 3, 2, c.main),
@@ -50,7 +50,7 @@ export const classicBeard: Trait[] = [
     id: 'chinstrap',
     name: '络腮线',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 5,
     swatches: BEARD,
     draw: ({ g, a, c }) => {
@@ -66,7 +66,7 @@ export const classicBeard: Trait[] = [
     id: 'muttonchops',
     name: '羊排鬓角',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 4,
     swatches: BEARD,
     draw: ({ g, a, c }) => {
@@ -78,7 +78,7 @@ export const classicBeard: Trait[] = [
     id: 'normal-beard',
     name: '短胡须',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 5,
     swatches: BEARD,
     draw: ({ g, a, c }) => {
@@ -89,7 +89,7 @@ export const classicBeard: Trait[] = [
     id: 'full-beard',
     name: '大胡子',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 4,
     swatches: BEARD,
     draw: ({ g, a, c, rng }) => {
@@ -100,7 +100,7 @@ export const classicBeard: Trait[] = [
     id: 'luxurious',
     name: '奢华长须',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 2,
     swatches: BEARD,
     draw: ({ g, a, c, rng }) => {
@@ -113,7 +113,7 @@ export const classicBeard: Trait[] = [
     id: 'shadow-beard',
     name: '胡茬',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 6,
     draw: ({ g, a, skin }) => {
       for (const [x, y] of beardCells(a, a.mouthY - 1, true))
@@ -124,7 +124,7 @@ export const classicBeard: Trait[] = [
     id: 'front-beard',
     name: '下巴胡',
     slot: 'beard',
-    sex: 'm',
+    sex: 'male',
     weight: 4,
     swatches: BEARD,
     draw: ({ g, a, c }) => {
@@ -237,7 +237,7 @@ export const classicMouth: Trait[] = [
     id: 'lipstick',
     name: '口红',
     slot: 'mouth',
-    sex: 'f',
+    sex: 'female',
     weight: 8,
     swatches: LIPS,
     draw: ({ g, a, c, skin }) => {

@@ -8,9 +8,9 @@ import { moreEyes } from './more-eyes'
 import { moreBeard, moreMouth } from './more-face'
 import { moreHead } from './more-head'
 import { outfit } from './outfit'
-import { bladeRunner } from './theme-bladerunner'
-import { breakingBad } from './theme-breakingbad'
-import { westworld } from './theme-westworld'
+import { bladeRunner } from './world-bladerunner'
+import { breakingBad } from './world-breakingbad'
+import { westworld } from './world-westworld'
 
 export * from './kit'
 

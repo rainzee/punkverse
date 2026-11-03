@@ -110,7 +110,7 @@ export function decorateRobot(g: Grid, a: Anchors, skin: SkinPalette) {
   g.vline(a.noseX, a.eyeY + 2, a.eyeY + 3, skin.s)
   for (let x = a.mouthL - 1; x <= a.mouthR + 1; x++) g.set(x, a.mouthY, x % 2 ? skin.m : skin.d)
   g.set(a.earX, a.eyeY + 1, '#555555')
-  for (let y = a.chinY + 1; y < 24; y++) g.hline(y, a.L, a.L + 4, y % 2 ? skin.d : skin.s)
+  for (let y = a.chinY + 1; y < 24; y++) g.hline(y, a.neckL, a.neckR, y % 2 ? skin.d : skin.s)
 }
 
 export function decorateSkeleton(g: Grid, a: Anchors, skin: SkinPalette) {

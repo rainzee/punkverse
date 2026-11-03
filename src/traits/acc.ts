@@ -26,7 +26,7 @@ export const classicAcc: Trait[] = [
     id: 'choker',
     name: '颈链',
     slot: 'acc',
-    sex: 'f',
+    sex: 'female',
     weight: 4,
     draw: ({ g, a }) => g.hline(21, a.L, a.L + 3, K),
   }),

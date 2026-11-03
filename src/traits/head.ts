@@ -336,12 +336,12 @@ export const classicHead: Trait[] = [
       g.hline(a.top - 3, a.L + 2, a.R - 2, alpha('#fff8c8', 0.35))
     },
   }),
-  t({ id: 'straight', name: '直长发', slot: 'head', sex: 'f', weight: 7, swatches: HAIR, draw: straightHair }),
+  t({ id: 'straight', name: '直长发', slot: 'head', sex: 'female', weight: 7, swatches: HAIR, draw: straightHair }),
   t({
     id: 'bob',
     name: '波波头',
     slot: 'head',
-    sex: 'f',
+    sex: 'female',
     weight: 6,
     swatches: HAIR,
     draw: ({ g, a, c }) => {
@@ -359,7 +359,7 @@ export const classicHead: Trait[] = [
     id: 'pigtails',
     name: '双马尾',
     slot: 'head',
-    sex: 'f',
+    sex: 'female',
     weight: 4,
     swatches: HAIR,
     draw: ({ g, a, c }) => {
@@ -377,7 +377,7 @@ export const classicHead: Trait[] = [
     id: 'half-shaved',
     name: '半边剃',
     slot: 'head',
-    sex: 'f',
+    sex: 'female',
     weight: 3,
     swatches: HAIR,
     draw: ({ g, a, c }) => {
@@ -391,7 +391,7 @@ export const classicHead: Trait[] = [
     id: 'tiara',
     name: '公主头冠',
     slot: 'head',
-    sex: 'f',
+    sex: 'female',
     weight: 2,
     swatches: HAIR.slice(0, 4),
     draw: (ctx) => {

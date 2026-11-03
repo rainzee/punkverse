@@ -118,7 +118,7 @@ export const moreHead: Trait[] = [
     id: 'side-part',
     name: '侧分',
     slot: 'head',
-    sex: 'm',
+    sex: 'male',
     weight: 6,
     swatches: HAIR,
     draw: ({ g, a, c }) => {
@@ -235,7 +235,7 @@ export const moreHead: Trait[] = [
     id: 'bun',
     name: '丸子头',
     slot: 'head',
-    sex: 'f',
+    sex: 'female',
     weight: 4,
     swatches: HAIR,
     draw: ({ g, a, c }) => {
@@ -253,7 +253,7 @@ export const moreHead: Trait[] = [
     id: 'ponytail',
     name: '马尾',
     slot: 'head',
-    sex: 'f',
+    sex: 'female',
     weight: 5,
     swatches: HAIR,
     draw: ({ g, a, c }) => {
@@ -271,7 +271,7 @@ export const moreHead: Trait[] = [
     id: 'wavy',
     name: '波浪长发',
     slot: 'head',
-    sex: 'f',
+    sex: 'female',
     weight: 5,
     swatches: HAIR,
     draw: (ctx) => {

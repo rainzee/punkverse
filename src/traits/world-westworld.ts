@@ -3,7 +3,7 @@ import { withOutline } from '../grid'
 import { HAIR, HAT, K, swatch, t, type Trait, W } from './kit'
 import { body, dress, neck } from './outfit'
 
-const THEME = 'westworld'
+const WORLD = 'westworld'
 const GOLD = '#ffd23a'
 const VEST = [swatch('鞍棕', '#5c4033'), swatch('黑', '#1f1a17'), swatch('酒红', '#5a1a1a'), swatch('灰', '#55504a')]
 
@@ -22,7 +22,7 @@ export const westworld: Trait[] = [
     id: 'stetson',
     name: '宽檐牛仔帽',
     slot: 'head',
-    theme: THEME,
+    world: WORLD,
     weight: 14,
     swatches: [swatch('黑', '#1f1a17'), swatch('白', '#ece6d8'), swatch('沙色', '#c2a878'), swatch('棕', '#6b4423')],
     draw: ({ g, a, c }) =>
@@ -41,7 +41,7 @@ export const westworld: Trait[] = [
     id: 'straw-hat',
     name: '草帽',
     slot: 'head',
-    theme: THEME,
+    world: WORLD,
     weight: 6,
     swatches: HAT.slice(0, 4),
     draw: ({ g, a, c }) =>
@@ -56,8 +56,8 @@ export const westworld: Trait[] = [
     id: 'braid',
     name: '侧编发辫',
     slot: 'head',
-    sex: 'f',
-    theme: THEME,
+    sex: 'female',
+    world: WORLD,
     weight: 8,
     swatches: HAIR.slice(0, 4),
     draw: ({ g, a, c }) => {
@@ -76,8 +76,8 @@ export const westworld: Trait[] = [
     id: 'feather-band',
     name: '羽毛发带',
     slot: 'head',
-    sex: 'f',
-    theme: THEME,
+    sex: 'female',
+    world: WORLD,
     weight: 4,
     swatches: HAT.slice(0, 4),
     draw: ({ g, a, c }) => {
@@ -94,7 +94,7 @@ export const westworld: Trait[] = [
     id: 'squint',
     name: '枪手眯眼',
     slot: 'eyes',
-    theme: THEME,
+    world: WORLD,
     weight: 10,
     draw: ({ g, a, skin }) => {
       for (const e of [a.eyeL, a.eyeR]) {
@@ -108,7 +108,7 @@ export const westworld: Trait[] = [
     id: 'outlaw-bandana',
     name: '蒙面巾',
     slot: 'mouth',
-    theme: THEME,
+    world: WORLD,
     weight: 8,
     swatches: [swatch('红', '#9e2a2a'), swatch('黑', '#1c1c1c'), swatch('靛蓝', '#2e3a59'), swatch('沙', '#c2a878')],
     draw: ({ g, a, c }) => {
@@ -124,19 +124,19 @@ export const westworld: Trait[] = [
     id: 'toothpick',
     name: '牙签',
     slot: 'mouth',
-    theme: THEME,
+    world: WORLD,
     weight: 6,
     draw: ({ g, a }) => {
       g.hline(a.mouthY, a.mouthR + 1, a.mouthR + 2, '#d9b98a')
       g.set(a.mouthR + 3, a.mouthY - 1, '#d9b98a')
     },
   }),
-  t({ id: 'vest', name: '马甲', slot: 'outfit', theme: THEME, weight: 10, swatches: VEST, draw: vest }),
+  t({ id: 'vest', name: '马甲', slot: 'outfit', world: WORLD, weight: 10, swatches: VEST, draw: vest }),
   t({
     id: 'sheriff',
     name: '警长马甲',
     slot: 'outfit',
-    theme: THEME,
+    world: WORLD,
     weight: 4,
     swatches: VEST,
     draw: (ctx) => {
@@ -151,7 +151,7 @@ export const westworld: Trait[] = [
     id: 'poncho',
     name: '斗篷',
     slot: 'outfit',
-    theme: THEME,
+    world: WORLD,
     weight: 6,
     swatches: [swatch('赭石', '#a0522d'), swatch('靛蓝', '#2e3a59'), swatch('褪红', '#9e3b2f')],
     draw: (ctx) => {
@@ -171,8 +171,8 @@ export const westworld: Trait[] = [
     id: 'lace-collar',
     name: '蕾丝高领',
     slot: 'outfit',
-    sex: 'f',
-    theme: THEME,
+    sex: 'female',
+    world: WORLD,
     weight: 7,
     swatches: [swatch('墨绿', '#2f4f3f'), swatch('酒红', '#5a1a24'), swatch('藏青', '#1b2a5c'), swatch('黑', '#1c1c1c')],
     draw: (ctx) => {
@@ -187,7 +187,7 @@ export const westworld: Trait[] = [
     id: 'host-reveal',
     name: '机体外露',
     slot: 'acc',
-    theme: THEME,
+    world: WORLD,
     z: 3.8,
     weight: 5,
     draw: ({ g, a }) => {
@@ -200,7 +200,7 @@ export const westworld: Trait[] = [
     id: 'dust',
     name: '风尘',
     slot: 'acc',
-    theme: THEME,
+    world: WORLD,
     z: 1,
     weight: 6,
     draw: ({ g, a, rng }) => {

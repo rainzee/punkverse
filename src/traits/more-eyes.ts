@@ -114,7 +114,7 @@ export const moreEyes: Trait[] = [
     id: 'eyeliner',
     name: '眼线',
     slot: 'eyes',
-    sex: 'f',
+    sex: 'female',
     weight: 5,
     draw: ({ g, a }) => {
       for (const e of [a.eyeL, a.eyeR]) {
