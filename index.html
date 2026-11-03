@@ -3,45 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Punk Forge · CryptoPunks 风格头像生成器</title>
+    <title>Punk Forge</title>
     <link rel="stylesheet" href="./src/app.css" />
   </head>
   <body>
     <header class="top">
       <div class="brand">
         <canvas id="logo"></canvas>
-        <div>
-          <h1>PUNK FORGE</h1>
-          <p>24×24 像素头像生成器 · 18 种渲染风格</p>
-        </div>
+        <h1>PUNK FORGE</h1>
       </div>
-      <button id="btn-random" class="primary">随机一个 <kbd>空格</kbd></button>
+      <button id="btn-random" class="primary">随机</button>
     </header>
 
     <main class="layout">
       <aside class="panel">
         <section>
-          <h3>种子</h3>
-          <div class="row">
-            <input id="seed" spellcheck="false" autocomplete="off" />
-            <button id="btn-dice" title="随机种子">🎲</button>
-          </div>
-          <p class="hint">相同的种子与设置总会得到同一个头像</p>
+          <input id="seed" spellcheck="false" autocomplete="off" />
         </section>
         <section>
-          <h3>类型</h3>
           <div id="kinds" class="chips"></div>
-          <div id="skin-wrap">
-            <h3>肤色</h3>
-            <div id="skins" class="chips"></div>
-          </div>
+          <div id="skins" class="chips"></div>
         </section>
         <section>
-          <h3>属性 <button id="btn-unlock" class="link">全部随机</button></h3>
           <div id="slots" class="slots"></div>
+          <button id="btn-unlock" class="link">重置</button>
         </section>
         <section>
-          <h3>导出</h3>
           <div class="row">
             <label class="check"><input type="checkbox" id="bg" checked /> 背景</label>
             <select id="size">
@@ -63,28 +50,15 @@
       <section class="stage">
         <div class="card">
           <div class="preview-wrap"><canvas id="preview"></canvas></div>
-          <div class="meta">
-            <div class="meta-head">
-              <span id="style-name" class="tag"></span>
-              <span id="seed-label" class="mono"></span>
-            </div>
-            <h2 id="title"></h2>
-            <p id="style-desc" class="hint"></p>
-            <ul id="attrs"></ul>
-            <p class="hint">← → 切换风格 · 点击属性可锁定</p>
-          </div>
+          <ul id="attrs"></ul>
         </div>
-        <h3 class="section-title">风格</h3>
         <div id="styles" class="styles"></div>
       </section>
     </main>
 
     <section class="gallery">
-      <div class="gallery-head">
-        <h3 class="section-title">批量生成 <span class="hint">按当前类型与锁定属性</span></h3>
-        <button id="btn-batch">换一批</button>
-      </div>
       <div id="gallery" class="grid"></div>
+      <button id="btn-batch">换一批</button>
     </section>
 
     <script type="module" src="./src/main.ts"></script>

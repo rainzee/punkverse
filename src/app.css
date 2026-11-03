@@ -2,10 +2,10 @@
   --bg: #0f1115;
   --panel: #171a21;
   --line: #262b36;
+  --field: #1f232c;
   --text: #e7e9ee;
   --dim: #8b93a5;
   --accent: #ff3d8b;
-  --accent2: #638596;
   --mono: ui-monospace, 'Cascadia Mono', Consolas, monospace;
   color-scheme: dark;
 }
@@ -30,7 +30,7 @@ select,
 input {
   font: inherit;
   color: var(--text);
-  background: #1f232c;
+  background: var(--field);
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 6px 10px;
@@ -51,23 +51,20 @@ button.primary {
   border-color: var(--accent);
   color: #fff;
   font-weight: 600;
+  padding: 8px 22px;
 }
 
 button.link {
   background: none;
   border: none;
   padding: 0;
+  margin-top: 10px;
   color: var(--dim);
   font-size: 12px;
-  text-decoration: underline;
 }
 
-kbd {
-  font-family: var(--mono);
-  font-size: 11px;
-  padding: 1px 5px;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.25);
+button.link:hover {
+  color: var(--text);
 }
 
 .top {
@@ -85,8 +82,8 @@ kbd {
 }
 
 .brand canvas {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 8px;
 }
 
@@ -96,15 +93,9 @@ kbd {
   letter-spacing: 0.12em;
 }
 
-.brand p {
-  margin: 0;
-  color: var(--dim);
-  font-size: 12px;
-}
-
 .layout {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 280px 1fr;
   gap: 24px;
   padding: 24px 28px;
 }
@@ -113,7 +104,7 @@ kbd {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 6px 18px;
+  padding: 4px 16px;
   align-self: start;
   position: sticky;
   top: 16px;
@@ -122,26 +113,17 @@ kbd {
 .panel section {
   padding: 14px 0;
   border-bottom: 1px solid var(--line);
+  display: grid;
+  gap: 10px;
 }
 
 .panel section:last-child {
   border-bottom: none;
 }
 
-h3 {
-  margin: 0 0 8px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--dim);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#skin-wrap h3 {
-  margin-top: 12px;
+#seed {
+  width: 100%;
+  font-family: var(--mono);
 }
 
 .row {
@@ -150,14 +132,7 @@ h3 {
   align-items: center;
 }
 
-.row input {
-  flex: 1;
-  min-width: 0;
-  font-family: var(--mono);
-}
-
 .btns {
-  margin-top: 10px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
@@ -167,14 +142,6 @@ h3 {
   font-size: 13px;
 }
 
-.row input[type='checkbox'] {
-  flex: none;
-  padding: 0;
-  width: 16px;
-  height: 16px;
-  accent-color: var(--accent);
-}
-
 .check {
   display: flex;
   gap: 6px;
@@ -182,13 +149,11 @@ h3 {
   flex: 1;
 }
 
-.hint {
-  color: var(--dim);
-  font-size: 12px;
-  margin: 6px 0 0;
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: 0;
+.row input[type='checkbox'] {
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
 }
 
 .chips {
@@ -198,12 +163,9 @@ h3 {
 }
 
 .chip {
-  padding: 4px 10px;
+  padding: 4px 12px;
   border-radius: 999px;
   font-size: 13px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
 }
 
 .chip.on {
@@ -211,24 +173,22 @@ h3 {
   background: rgba(255, 61, 139, 0.15);
 }
 
-.chip i {
-  width: 12px;
-  height: 12px;
+.swatch {
+  width: 26px;
+  height: 26px;
+  padding: 0;
   border-radius: 50%;
-  display: inline-block;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--panel);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.swatch.on {
+  box-shadow: 0 0 0 2px var(--accent);
 }
 
 .slots {
   display: grid;
-  grid-template-columns: 44px 1fr;
   gap: 8px;
-  align-items: center;
-}
-
-.slots label {
-  color: var(--dim);
-  font-size: 13px;
 }
 
 .slots select.locked {
@@ -238,7 +198,7 @@ h3 {
 .card {
   display: grid;
   grid-template-columns: minmax(280px, 480px) 1fr;
-  gap: 28px;
+  gap: 24px;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -257,68 +217,42 @@ h3 {
   height: 100%;
 }
 
-.meta-head {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.tag {
-  background: var(--accent);
-  color: #fff;
-  border-radius: 6px;
-  padding: 1px 8px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.mono {
-  font-family: var(--mono);
-  color: var(--dim);
-}
-
-.meta h2 {
-  margin: 12px 0 0;
-  font: 700 28px var(--mono);
-}
-
 #attrs {
   list-style: none;
   padding: 0;
-  margin: 18px 0;
-  display: grid;
-  gap: 6px;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: start;
 }
 
 #attrs li {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: #1f232c;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--field);
   border: 1px solid transparent;
+  color: var(--dim);
+}
+
+#attrs li.lockable {
+  color: var(--text);
   cursor: pointer;
 }
 
-#attrs li:hover {
+#attrs li.lockable:hover {
   border-color: #3b4252;
 }
 
 #attrs li.locked {
   border-color: var(--accent);
-}
-
-#attrs li span:first-child {
-  color: var(--dim);
-}
-
-.section-title {
-  margin-top: 24px;
+  background: rgba(255, 61, 139, 0.15);
 }
 
 .styles {
+  margin-top: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
   gap: 10px;
 }
 
@@ -327,8 +261,6 @@ h3 {
   overflow: hidden;
   border-radius: 10px;
   border: 2px solid transparent;
-  background: #1f232c;
-  text-align: center;
 }
 
 .thumb canvas {
@@ -336,39 +268,19 @@ h3 {
   aspect-ratio: 1;
 }
 
-.thumb span {
-  display: block;
-  padding: 4px 0;
-  font-size: 12px;
-  color: var(--dim);
-}
-
 .thumb.on {
   border-color: var(--accent);
 }
 
-.thumb.on span {
-  color: var(--text);
-}
-
 .gallery {
   padding: 0 28px 40px;
-}
-
-.gallery-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  margin-bottom: 10px;
-}
-
-.gallery-head h3 {
-  margin-bottom: 0;
-  justify-content: start;
-  gap: 10px;
+  display: grid;
+  justify-items: center;
+  gap: 16px;
 }
 
 .grid {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 10px;

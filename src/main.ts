@@ -55,15 +55,20 @@ function writeHash() {
 const style = () => STYLE_BY_ID[state.style]
 const kindSex = () => (state.opt.kind === 'random' ? undefined : KIND[state.opt.kind].sex)
 
-function chip(label: string, on: boolean, onClick: () => void, dot?: string) {
+function chip(label: string, on: boolean, onClick: () => void) {
   const b = document.createElement('button')
   b.className = `chip${on ? ' on' : ''}`
-  if (dot) {
-    const i = document.createElement('i')
-    i.style.background = dot
-    b.append(i)
-  }
   b.append(label)
+  b.onclick = onClick
+  return b
+}
+
+const SKIN_RANDOM = `conic-gradient(${KIND.male.skins.map((s) => s.skin.s).join(',')})`
+
+function swatchChip(bg: string, on: boolean, onClick: () => void) {
+  const b = document.createElement('button')
+  b.className = `swatch${on ? ' on' : ''}`
+  b.style.background = bg
   b.onclick = onClick
   return b
 }
@@ -78,10 +83,10 @@ function renderControls() {
   )
 
   const human = state.opt.kind === 'male' || state.opt.kind === 'female' || state.opt.kind === 'random'
-  $('skin-wrap').hidden = !human
+  $('skins').hidden = !human
   $('skins').replaceChildren(
-    chip('随机', state.opt.skin === 'random', () => update({ skin: 'random' })),
-    ...KIND.male.skins.map((s, i) => chip(s.name, state.opt.skin === i, () => update({ skin: i }), s.skin.s)),
+    swatchChip(SKIN_RANDOM, state.opt.skin === 'random', () => update({ skin: 'random' })),
+    ...KIND.male.skins.map((s, i) => swatchChip(s.skin.s, state.opt.skin === i, () => update({ skin: i }))),
   )
 
   const sex = kindSex()
@@ -89,19 +94,17 @@ function renderControls() {
   slots.replaceChildren()
   for (const slot of SLOTS) {
     const pool = traitsFor(slot, sex)
-    const label = document.createElement('label')
-    label.textContent = SLOT_NAMES[slot]
     const sel = document.createElement('select')
     const opts: [string, string][] = [
-      ['random', '随机'],
+      ['random', SLOT_NAMES[slot]],
       ['none', '无'],
-      ...pool.map((t): [string, string] => [t.id, t.sex && !sex ? `${t.name}（${t.sex === 'f' ? '女' : '男'}）` : t.name]),
+      ...pool.map((t): [string, string] => [t.id, t.name]),
     ]
     for (const [v, text] of opts) sel.add(new Option(text, v, false, state.opt.slots[slot] === v))
     sel.disabled = !pool.length
     sel.classList.toggle('locked', state.opt.slots[slot] !== 'random')
     sel.onchange = () => setSlot(slot, sel.value)
-    slots.append(label, sel)
+    slots.append(sel)
   }
   ;($('bg') as HTMLInputElement).checked = state.background
 }
@@ -138,29 +141,21 @@ function renderMain() {
   renderCanvas($('preview'), grid, st, { size: Math.round(480 * dpr), background: state.background, seed: state.seed })
   renderCanvas($('logo'), grid, STYLE_BY_ID.classic, { size: 96, background: true, seed: state.seed })
 
-  const info = KIND[punk.kind]
-  $('style-name').textContent = st.name
-  $('style-desc').textContent = st.desc
-  $('seed-label').textContent = `#${state.seed}`
-  $('title').textContent = `${info.name} Punk`
   const attrs = $('attrs')
   attrs.replaceChildren()
-  const li = (k: string, v: string, slot?: Slot, id?: string) => {
+  const li = (text: string, slot?: Slot, id?: string) => {
     const el = document.createElement('li')
-    el.innerHTML = `<span></span><span></span>`
-    el.children[0].textContent = k
-    el.children[1].textContent = v
+    el.textContent = text
     if (slot && id) {
       const locked = state.opt.slots[slot] === id
+      el.classList.add('lockable')
       el.classList.toggle('locked', locked)
-      el.title = locked ? '点击解锁' : '点击锁定该属性'
       el.onclick = () => setSlot(slot, locked ? 'random' : id)
     }
     attrs.append(el)
   }
-  li('类型', info.skins.length > 1 ? `${info.name} · ${info.skins[punk.skinIndex].name}` : info.name)
-  for (const pk of punk.picks) li(SLOT_NAMES[pk.trait.slot], traitLabel(pk), pk.trait.slot, pk.trait.id)
-  li('属性数', String(punk.picks.length))
+  li(KIND[punk.kind].name)
+  for (const pk of punk.picks) li(traitLabel(pk), pk.trait.slot, pk.trait.id)
 }
 
 function renderStyles() {
@@ -172,8 +167,8 @@ function renderStyles() {
         const b = document.createElement('button')
         b.className = 'thumb'
         b.dataset.id = s.id
-        b.title = s.desc
-        b.append(document.createElement('canvas'), Object.assign(document.createElement('span'), { textContent: s.name }))
+        b.title = s.name
+        b.append(document.createElement('canvas'))
         b.onclick = () => setStyle(s.id)
         return b
       }),
@@ -226,7 +221,6 @@ const fileBase = () => `punk-${state.seed}-${state.style}`
 
 function bind() {
   $('btn-random').onclick = () => update({ seed: randomSeed() })
-  $('btn-dice').onclick = () => update({ seed: randomSeed() })
   $('seed').oninput = (e) => {
     const v = (e.target as HTMLInputElement).value.trim()
     if (!v) return
