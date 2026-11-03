@@ -1,6 +1,8 @@
-# Punk Forge
+# Punkverse
 
 CryptoPunks 风格的 24×24 像素头像生成器，所有像素都由程序生成（没有使用原版素材）。
+
+在线体验：https://rainzee.github.io/punkverse/
 
 ```bash
 bun install
@@ -57,3 +59,7 @@ bun run preview abc --world=westworld --sex=female --species=robot --head=cap   
 - 新世界：在 `worlds.ts` 里定义一个 `world({...})`，专属部件写在 `src/traits/world-*.ts` 并标上 `world`
 - 新部件：往 `src/traits/` 下对应的数组里追加一个 `t({...})`
 - 新物种：在 `species.ts` 里追加，并在 `features.ts` 里写它的面部改造
+
+## 声明
+
+本项目是非官方的同人作品，与 CryptoPunks 及其版权方没有任何关联。各个“世界”只是借用影视作品的氛围做像素风致敬，不包含任何原作素材或商标。
