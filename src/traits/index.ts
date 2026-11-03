@@ -8,6 +8,8 @@ import { moreEyes } from './more-eyes'
 import { moreBeard, moreMouth } from './more-face'
 import { moreHead } from './more-head'
 import { outfit } from './outfit'
+import { bladeRunner } from './theme-bladerunner'
+import { westworld } from './theme-westworld'
 
 export * from './kit'
 
@@ -23,5 +25,7 @@ export const TRAITS: Trait[] = [
   ...outfit,
   ...classicAcc,
   ...moreAcc,
+  ...bladeRunner,
+  ...westworld,
 ]
 export const TRAIT_BY_ID: Record<string, Trait> = Object.fromEntries(TRAITS.map((x) => [x.id, x]))

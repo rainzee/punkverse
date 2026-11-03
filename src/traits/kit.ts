@@ -58,6 +58,7 @@ export interface Trait {
   z: number
   weight: number
   sex?: Sex
+  theme?: string
   swatches: Swatch[]
   draw: (ctx: DrawCtx) => void
 }

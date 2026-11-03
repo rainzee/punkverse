@@ -11,6 +11,7 @@ import {
 } from './features'
 import { Grid, SIZE } from './grid'
 import { makeRng, weighted } from './rng'
+import { inTheme, type Theme, themedWeight, themeOf } from './themes'
 import {
   type Anchors,
   type Sex,
@@ -45,12 +46,14 @@ export interface Punk {
   seed: string
   kind: Kind
   skinIndex: number
+  theme: string
   face: FaceShape
   picks: Picked[]
 }
 
 /** 生成约束, 部件取值为 random none 或具体部件 id */
 export interface GenOptions {
+  theme: string
   kind: Kind | 'random'
   skin: number | 'random'
   slots: Record<Slot, string>
@@ -226,22 +229,30 @@ export const BASE: Record<Sex, { rows: string[]; anchors: Anchors }> = {
 }
 
 export const defaultOptions = (): GenOptions => ({
+  theme: 'none',
   kind: 'random',
   skin: 'random',
   slots: { head: 'random', eyes: 'random', beard: 'random', mouth: 'random', outfit: 'random', acc: 'random' },
 })
 
-export function traitsFor(slot: Slot, sex?: Sex): Trait[] {
-  return TRAITS.filter((t) => t.slot === slot && (!sex || !t.sex || t.sex === sex))
+export function traitsFor(slot: Slot, sex?: Sex, theme?: string): Trait[] {
+  const th = themeOf(theme)
+  return TRAITS.filter((t) => t.slot === slot && (!sex || !t.sex || t.sex === sex) && inTheme(t, th))
+}
+
+function kindPool(th: Theme, sex?: Sex) {
+  const base = KINDS.filter((k) => !sex || k.sex === sex)
+  const themed = base.filter((k) => th.kinds[k.id]).map((k) => ({ ...k, weight: th.kinds[k.id] }))
+  return themed.length ? themed : base
 }
 
 /** 由种子和约束确定性地生成头像, 每个槽位固定消耗随机数, 锁定某个槽位不会扰动其它槽位 */
 export function generate(seed: string, opt: GenOptions): Punk {
   const rng = makeRng(seed)
+  const th = themeOf(opt.theme)
   const forced = SLOTS.map((s) => TRAIT_BY_ID[opt.slots[s]]).filter(Boolean)
   const needSex = forced.find((t) => t.sex)?.sex
-  const kindPool = KINDS.filter((k) => !needSex || k.sex === needSex)
-  const rolledKind = weighted(rng, kindPool)!.id
+  const rolledKind = weighted(rng, kindPool(th, needSex))!.id
   const kind = opt.kind === 'random' ? rolledKind : opt.kind
   const info = KIND[kind]
   const skinRoll = Math.floor(rng() * info.skins.length)
@@ -250,20 +261,22 @@ export function generate(seed: string, opt: GenOptions): Punk {
   const picks: Picked[] = []
   const add = (trait: Trait | undefined, roll: number, odd: number[]) => {
     if (!trait || (trait.sex && trait.sex !== info.sex)) return
-    const custom = trait.swatches.length >= 4 && odd[0] < 0.1
-    const sw = custom
+    const colorable = trait.swatches.length >= 4
+    const sw = colorable && th.colors.length && odd[0] < 0.5
+      ? th.colors[Math.floor(odd[1] * th.colors.length)]
+      : colorable && !th.colors.length && odd[0] < 0.1
       ? swatch('异色', hex(fromHsl(odd[1] * 360, 0.45 + odd[2] * 0.45, 0.3 + odd[3] * 0.35)))
       : trait.swatches[Math.floor(roll * trait.swatches.length)]
     picks.push({ trait, swatch: sw })
   }
   for (const slot of SLOTS) {
-    const pool = traitsFor(slot, info.sex)
+    const pool = traitsFor(slot, info.sex, th.id).map((trait) => ({ trait, weight: themedWeight(trait, th) }))
     const chance = rng()
-    const first = weighted(rng, pool)
+    const first = weighted(rng, pool)?.trait
     const second = weighted(
       rng,
-      pool.filter((t) => t !== first),
-    )
+      pool.filter((p) => p.trait !== first),
+    )?.trait
     const rolls = [rng(), rng()]
     const odd = [rng(), rng(), rng(), rng()]
     const choice = opt.slots[slot]
@@ -275,9 +288,9 @@ export function generate(seed: string, opt: GenOptions): Punk {
     if (slot === 'acc') {
       const n = chance < 0.45 ? 0 : chance < 0.8 ? 1 : 2
       ;[first, second].slice(0, n).forEach((t, i) => add(t, rolls[i], odd))
-    } else if (chance < SLOT_CHANCE[slot]) add(first, rolls[0], odd)
+    } else if (chance < (th.chance[slot] ?? SLOT_CHANCE[slot])) add(first, rolls[0], odd)
   }
-  return { seed, kind, skinIndex, face: rollFace(rng), picks }
+  return { seed, kind, skinIndex, theme: th.id, face: rollFace(rng), picks }
 }
 
 export function skinOf(p: Punk): SkinPalette {

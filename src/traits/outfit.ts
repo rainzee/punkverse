@@ -2,13 +2,13 @@ import { withOutline } from '../grid'
 import type { Hex } from '../grid'
 import { type Anchors, CLOTH, type DrawCtx, K, swatch, t, type Trait, W } from './kit'
 
-const body = (a: Anchors, x: number, y: number) =>
+export const body = (a: Anchors, x: number, y: number) =>
   (y === 22 && x >= a.L - 1 && x <= a.R) || (y === 23 && x >= a.L - 2 && x <= a.R + 1)
 
-const neck = (a: Anchors, x: number, y: number) => y > a.chinY && x >= a.neckL && x <= a.neckR
+export const neck = (a: Anchors, x: number, y: number) => y > a.chinY && x >= a.neckL && x <= a.neckR
 
 /** 在脖子与肩部区域按规则填色, 并为衣服加描边 */
-function dress(ctx: DrawCtx, fill: (x: number, y: number, cx: number) => Hex | null) {
+export function dress(ctx: DrawCtx, fill: (x: number, y: number, cx: number) => Hex | null) {
   const { g, a } = ctx
   const cx = Math.floor((a.neckL + a.neckR) / 2)
   withOutline(

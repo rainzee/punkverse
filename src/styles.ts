@@ -283,6 +283,88 @@ export const STYLES: Style[] = [
     color: (c) => (isInk(c) ? rgba(0, 0, 0) : lum(c) < 0.2 ? rgba(30, 30, 30) : rgba(255, 255, 255)),
     shape: 'square',
   },
+  {
+    id: 'rain',
+    name: '雨夜霓虹',
+    desc: '湿漉漉的霓虹街头, 青橙色调与斜雨',
+    background: (p) => {
+      const s = p.size
+      p.linear(['#04060d', '#0b1630', '#1d0f2e'])
+      p.glow(s * 0.03)
+      p.rect(s * 0.04, s * 0.1, s * 0.05, s * 0.3, 'rgba(255,46,136,0.85)')
+      p.rect(s * 0.86, s * 0.18, s * 0.08, s * 0.04, 'rgba(0,229,255,0.85)')
+      p.rect(s * 0.8, s * 0.3, s * 0.14, s * 0.025, 'rgba(255,179,71,0.8)')
+      p.rect(s * 0.06, s * 0.55, s * 0.12, s * 0.03, 'rgba(0,229,255,0.6)')
+      p.glow(0)
+      p.rect(0, s * 0.78, s, s * 0.22, 'rgba(255,90,31,0.10)')
+    },
+    color: (c) => {
+      if (isInk(c)) return parse('#05070f')
+      const tint = lum(c) < 0.45 ? rgba(20, 90, 110, c.a) : rgba(255, 150, 60, c.a)
+      return adjust(lerp(c, tint, 0.22), { satAdd: 0.1 })
+    },
+    post: (ctx, size, rng) => {
+      ctx.shadowBlur = 0
+      ctx.lineWidth = Math.max(1, size / 400)
+      for (let i = 0; i < size / 3; i++) {
+        const x = rng() * size * 1.2
+        const y = rng() * size
+        const len = size * (0.03 + rng() * 0.05)
+        ctx.strokeStyle = `rgba(180,210,255,${0.08 + rng() * 0.18})`
+        ctx.beginPath()
+        ctx.moveTo(x, y)
+        ctx.lineTo(x - len * 0.25, y + len)
+        ctx.stroke()
+      }
+      scanlines(ctx, size, 0.06)
+    },
+  },
+  {
+    id: 'wanted',
+    name: '通缉令',
+    desc: '钉在酒馆门口的泛黄悬赏告示',
+    padding: 0.13,
+    background: (p) => {
+      const s = p.size
+      const ink = '#5a3a1e'
+      p.fill('#e6d2a3')
+      for (const [b, w] of [
+        [0.045, 0.01],
+        [0.075, 0.004],
+      ]) {
+        const o = s * b
+        const t = Math.max(1, s * w)
+        p.rect(o, o, s - 2 * o, t, ink)
+        p.rect(o, s - o - t, s - 2 * o, t, ink)
+        p.rect(o, o, t, s - 2 * o, ink)
+        p.rect(s - o - t, o, t, s - 2 * o, ink)
+      }
+      for (const [x, y] of [
+        [0.025, 0.025],
+        [0.975, 0.025],
+        [0.025, 0.975],
+        [0.975, 0.975],
+      ])
+        p.circle(s * x, s * y, s * 0.012, '#3a2614')
+      p.rect(s * 0.13, s * 0.13, s * 0.74, s * 0.74, '#d8c08a')
+    },
+    color: (c) => ({ ...ramp(['#24160b', '#5e3b1c', '#a47b47', '#efdfb6'], lum(c) * 1.05), a: c.a }),
+    post: (ctx, size, rng) => {
+      ctx.shadowBlur = 0
+      for (let i = 0; i < 6; i++) {
+        const x = rng() * size
+        const y = rng() * size
+        const r = size * (0.05 + rng() * 0.12)
+        const g = ctx.createRadialGradient(x, y, 0, x, y, r)
+        g.addColorStop(0, 'rgba(120,80,30,0.16)')
+        g.addColorStop(1, 'rgba(120,80,30,0)')
+        ctx.fillStyle = g
+        ctx.fillRect(x - r, y - r, r * 2, r * 2)
+      }
+      vignette(ctx, size, 0.7)
+      grain(ctx, size, rng, 0.07)
+    },
+  },
 ]
 
 function toLight(c: Rgba) {
