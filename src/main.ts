@@ -63,7 +63,6 @@ function chip(label: string, on: boolean, onClick: () => void) {
   return b
 }
 
-const SKIN_RANDOM = `conic-gradient(${KIND.male.skins.map((s) => s.skin.s).join(',')})`
 
 function swatchChip(bg: string, on: boolean, onClick: () => void) {
   const b = document.createElement('button')
@@ -82,11 +81,12 @@ function renderControls() {
     ...KINDS.map((k) => chip(k.name, state.opt.kind === k.id, () => setKind(k.id))),
   )
 
-  const human = state.opt.kind === 'male' || state.opt.kind === 'female' || state.opt.kind === 'random'
-  $('skins').hidden = !human
+  const skins = KIND[state.opt.kind === 'random' ? 'male' : state.opt.kind].skins
+  const mixed = `conic-gradient(${skins.map((s) => s.skin.s).join(',')})`
+  $('skins').hidden = skins.length < 2
   $('skins').replaceChildren(
-    swatchChip(SKIN_RANDOM, state.opt.skin === 'random', () => update({ skin: 'random' })),
-    ...KIND.male.skins.map((s, i) => swatchChip(s.skin.s, state.opt.skin === i, () => update({ skin: i }))),
+    swatchChip(mixed, state.opt.skin === 'random', () => update({ skin: 'random' })),
+    ...skins.map((s, i) => swatchChip(s.skin.s, state.opt.skin === i, () => update({ skin: i }))),
   )
 
   const sex = kindSex()
@@ -111,6 +111,7 @@ function renderControls() {
 
 function setKind(kind: Kind | 'random') {
   state.opt.kind = kind
+  state.opt.skin = 'random'
   const sex = kindSex()
   for (const s of SLOTS) {
     const t = TRAIT_BY_ID[state.opt.slots[s]]
@@ -258,6 +259,7 @@ function bind() {
       style: state.style,
       type: punk.kind,
       skin: KIND[punk.kind].skins[punk.skinIndex].name,
+      face: punk.face,
       attributes: punk.picks.map((p) => ({ slot: p.trait.slot, id: p.trait.id, name: p.trait.name, color: p.swatch.name || undefined })),
     }
     download(`${fileBase()}.json`, new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }))
